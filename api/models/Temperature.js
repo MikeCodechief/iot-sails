@@ -8,10 +8,7 @@
 module.exports = {
 
   attributes: {
-  	value : {
-  		type: 'float'
-  	},
-  	user: { model: 'User' },
+
   }
 };
 

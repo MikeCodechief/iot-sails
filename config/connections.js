@@ -65,6 +65,7 @@ module.exports.connections = {
     database: 'iot-sails'
   },
 
+
   /***************************************************************************
   *                                                                          *
   * PostgreSQL is another officially supported relational database.          *

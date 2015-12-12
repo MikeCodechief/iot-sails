@@ -1,3 +1,5 @@
+var fs = require('fs');
+var path = require('path')
 /**
  * grunt/pipeline.js
  *
@@ -5,12 +7,21 @@
  * compiled and linked from your views and static HTML files.
  *
  * (Note that you can take advantage of Grunt-style wildcard/glob/splat expressions
- * for matching multiple files, and the ! prefix for excluding files.)
+ * for matching multiple files.)
  */
 
-// Path to public folder
-var tmpPath = '.tmp/public/';
+// BROWSERIFY main file path
+// Browserify task work before copying the files in the .tmp folder
+// so the path sould be something like .tmp/public/js/app.js
+// just change assets/ for .tmp/public/ and then the same path as always
+var browserifyMainFile = './assets/app/app.js';
+var appRootDir = browserifyMainFile.substring(0, browserifyMainFile.lastIndexOf('/'));
 
+//This is the path which tyhe bablify task will look to for transcompiling ES6->ES5
+var es6To5SrcJSDir     = appRootDir+'/components/es6';
+var es6To5BuildPath    = appRootDir+'/build/';
+var typescriptDirectory = appRootDir+'/components/ts/'
+var packagesToInstall  = ['grunt-shell', 'grunt-react', 'grunt-browserify', 'grunt-babel', 'react-bootstrap', 'react', 'babel'];
 // CSS files to inject in order
 //
 // (if you're using LESS with the built-in default config, you'll want
@@ -25,17 +36,10 @@ var cssFilesToInject = [
 var jsFilesToInject = [
 
   // Load sails.io before everything else
-  'js/dependencies/sails.io.js',
-
-  // Dependencies like jQuery, or Angular are brought in here
-  'js/dependencies/**/*.js',
-
+  'vendor/sails.io.js/sails.io.js',
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js',
-
-  // Use the "exclude" operator to ignore files
-  // '!js/ignore/these/files/*.js'
+  'app/**/*.js'
 ];
 
 
@@ -57,12 +61,19 @@ var templateFilesToInject = [
 // Prefix relative paths to source files so they point to the proper locations
 // (i.e. where the other Grunt tasks spit them out, or in some cases, where
 // they reside in the first place)
-module.exports.cssFilesToInject = cssFilesToInject.map(transformPath);
-module.exports.jsFilesToInject = jsFilesToInject.map(transformPath);
-module.exports.templateFilesToInject = templateFilesToInject.map(transformPath);
-
-// Transform paths relative to the "assets" folder to be relative to the public
-// folder, preserving "exclude" operators.
-function transformPath(path) {
-  return (path.substring(0,1) == '!') ? ('!' + tmpPath + path.substring(1)) : (tmpPath + path);
-}
+module.exports.cssFilesToInject = cssFilesToInject.map(function(path) {
+  return '.tmp/public/' + path;
+});
+module.exports.jsFilesToInject = jsFilesToInject.map(function(path) {
+  return '.tmp/public/' + path;
+});
+module.exports.templateFilesToInject = templateFilesToInject.map(function(path) {
+  return 'assets/' + path;
+});
+// Browserify main file path
+module.exports.browserifyMainFile = browserifyMainFile;
+module.exports.es6To5SrcJSDir = es6To5SrcJSDir;
+module.exports.es6To5BuildPath = es6To5BuildPath;
+module.exports.appRootDir = appRootDir;
+module.exports.packagesToInstall = packagesToInstall;
+module.exports.typescriptDir = typescriptDirectory;
