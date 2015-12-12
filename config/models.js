@@ -10,7 +10,7 @@
  */
 
 module.exports.models = {
-    'connection' : 'someMongodbServer',
+    'connection' : 'liveMongodbServer',
 
   /***************************************************************************
   *                                                                          *
