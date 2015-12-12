@@ -97,37 +97,5 @@
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/app.js"></script>
     <!--SCRIPTS END-->
-    <script type="text/javascript">
-
-    // `io` is available as a global.
-    // `io.socket` will connect automatically, but at this point in the DOM, it is not ready yet
-    // (think of $(document).ready() from jQuery)
-    // 
-    // Fortunately, this library provides an abstraction to avoid this issue.
-    // Requests you make before `io` is ready will be queued and replayed automatically when the socket connects.
-    // To disable this behavior or configure other things, you can set properties on `io.sails`.
-    // You have one cycle of the event loop to set `io.sails.autoConnect` to false before the auto-connection
-    // behavior starts.
-    var newTempData = {
-        "value": 35 ,
-        "smell":"face",
-    };
-
-    io.socket.post('/humidity', newTempData ,function serverResponded (humidity, JWR) {
-      console.log("data");
-      if(JWR.statusCode == 200){
-        console.log("post worked");
-        console.log(humidity);
-      }
-    });
-
-
-    io.socket.get('/humidity', function serverResponded (humidity, JWR) {
-      if(JWR.statusCode == 200){
-        console.log("Succssess");
-        console.log(humidity);
-      }
-    });
-  </script>
   </body>
 </html>
