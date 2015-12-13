@@ -272,43 +272,43 @@ var Temperature = React.createClass({
   }
 });
 
-var Home = React.createClass({
-  render: function() {
-    return (
-          <div className="container">
-      <div className="row text-center">
-        <div className="col-sm-4">
-          <h1 className="text-center">
-            <a className="header-default">
-              <img id="visualize-icon">Visualize</img>
-            </a>
-          </h1>
-          <div>make data from number to graphic</div>
-        </div>
+// var Home = React.createClass({
+//   render: function() {
+//     return (
+//           <div className="container">
+//       <div className="row text-center">
+//         <div className="col-sm-4">
+//           <h1 className="text-center">
+//             <a className="header-default">
+//               <img id="visualize-icon">Visualize</img>
+//             </a>
+//           </h1>
+//           <div>make data from number to graphic</div>
+//         </div>
       
-        <div className="col-sm-4">
-          <h1 className="text-center">
-            <a className="header-default">
-            <img id="manage-icon">Manage</img>
-            </a>
-          </h1>
-          <div>muliti-panel gets data in front of you</div>
-        </div>
+//         <div className="col-sm-4">
+//           <h1 className="text-center">
+//             <a className="header-default">
+//             <img id="manage-icon">Manage</img>
+//             </a>
+//           </h1>
+//           <div>muliti-panel gets data in front of you</div>
+//         </div>
 
-        <div className="col-sm-4">
-          <h1 className="text-center">
-            <a className="header-default">
-              <img id="connect-icon">Connect</img>
-            </a>
-          </h1>
-          <div>monitor multiple devices all at once</div>
-        </div>
+//         <div className="col-sm-4">
+//           <h1 className="text-center">
+//             <a className="header-default">
+//               <img id="connect-icon">Connect</img>
+//             </a>
+//           </h1>
+//           <div>monitor multiple devices all at once</div>
+//         </div>
 
-      </div>
-    </div>
-    );
-  }
-});
+//       </div>
+//     </div>
+//     );
+//   }
+// });
 
 // Run the routes
 var routes = (
