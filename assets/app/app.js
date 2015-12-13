@@ -39,8 +39,8 @@ var App = React.createClass({
             </div>
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav navbar-right">
-                <li><Link to="page"><span className="glyphicon glyphicon-user"></span> Page</Link></li>
-                <li><Link to="about"><span className="glyphicon glyphicon-log-in"></span> About</Link></li>
+                <li><Link to="humidity"><span className="glyphicon glyphicon-user"></span> Humidity</Link></li>
+                <li><Link to="temperature"><span className="glyphicon glyphicon-log-in"></span> Temperature</Link></li>
                 
               </ul>
             </div>
@@ -55,12 +55,12 @@ var App = React.createClass({
   }
 });
 
-var person = {
-  name: "Mike",
-  age: 87,
-  loves: "women",
-  experise: "Maker"
-};
+// var person = {
+//   name: "Mike",
+//   age: 87,
+//   loves: "women",
+//   experise: "Maker"
+// };
 
 
 
@@ -103,7 +103,7 @@ var Home = React.createClass({
   }
 });
 
-var Page = React.createClass({
+var Humidity = React.createClass({
   getInitialState: function(){
     return {
       humidityList: [],
@@ -142,7 +142,7 @@ var Page = React.createClass({
         			labels: labels,
 		            datasets: [
 		                {
-		                    label: "Temperature Data",
+		                    label: "Humidity Data",
 		                    fillColor: "rgba(220,220,220,0.2)",
 		                    strokeColor: "rgba(220,220,220,1)",
 		                    pointColor: "rgba(220,220,220,1)",
@@ -172,12 +172,12 @@ var Page = React.createClass({
 	        </div>
 	        <ul>
 	            {this.state.humidityList.map(function(result) {
-	              return <li key={result.id}>
-	                        <ul>
-	                          <li>{result.value}</li>
-	                          <li>{result.createdAt}</li>
-	                        </ul>
-	                      </li>;
+	              return <table key={result.id}>
+	                        <tr>
+	                          <th>{result.value}</th>
+	                          <th>{result.createdAt}</th>
+	                        </tr>
+	                      </table>;
 	            })}           
 	        </ul>
 	      </div>
@@ -188,17 +188,87 @@ var Page = React.createClass({
 });
 
 
-var About = React.createClass({
+var Temperature = React.createClass({
+  getInitialState: function(){
+    return {
+      TemperatureList: [],
+      chartData : {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: rand(32, 100, 7)
+                }
+            ]
+          }
+    };
+  },
+  componentDidMount: function(){
+    var component = this;
+    io.socket.get('/temperatures', function serverResponded (temperature, JWR) {
+      if(JWR.statusCode == 200){
+        console.log("Succssess");
+        temperature;
+        console.log(temperature);
+        if (component.isMounted()) {
+          var labels = [];
+          var values = [];
+          for(var i=0; i<temperature.length; i++){
+            labels.push(temperature[i].createdAt);
+            values.push(temperature[i].value);
+          }
+        var newChartData = {
+              labels: labels,
+                datasets: [
+                    {
+                        label: "Temperature Data",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: values
+                    }
+                ]
+          };
+          component.setState({
+            temperatureList: temperature,
+            chartData: newChartData
+          });
+        }
+      }
+    }).bind(component);
+  },
+
   render: function() {
-    return (
-      <div>
-        <h1>About</h1>
-        <p>Name: {person.name}</p>
-        <p>Age: {person.age}</p>
-        <p>loves: {person.loves}</p>
-        <p>experise: {person.experise}</p>
-      </div>
-    );
+    if(this.state.temperatureList.length)
+      return (
+        <div>
+          <h1>Temperature Data</h1>
+          <div className='chartWrapper'>
+            <LineChart data={this.state.chartData} options={chartOptions}  width="1400" height="500"/>
+          </div>
+          <ul>
+              {this.state.temperatureList.map(function(result) {
+                return <tbody key={result.id}>
+                          <tr>
+                            <td>{result.value}</td>
+                            <td>{result.createdAt}</td>
+                          </tr>
+                        </tbody>;
+              })}           
+          </ul>
+        </div>
+      );
+  else
+    return (<p>Loading</p>);
   }
 });
 
@@ -207,8 +277,8 @@ var About = React.createClass({
 var routes = (
       <Router>
         <Route name="app" path="/" component={App}>
-          <Route name="page" path="/page" component={Page} />
-          <Route name="about" path="/about" component={About} />
+          <Route name="humidity" path="/humidity" component={Humidity} />
+          <Route name="temperature" path="/temperature" component={Temperature} />
           <Route path="*" component={Home}/>
         </Route>
       </Router>
