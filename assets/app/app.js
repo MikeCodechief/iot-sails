@@ -35,7 +35,7 @@ var App = React.createClass({
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="/">IoT Dashboard</a>
+              <Link to="home"><a className="navbar-brand" href="/">IoT Dashboard</a></Link>
             </div>
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav navbar-right">
@@ -279,7 +279,7 @@ var routes = (
         <Route name="app" path="/" component={App}>
           <Route name="humidity" path="/humidity" component={Humidity} />
           <Route name="temperature" path="/temperature" component={Temperature} />
-          <Route path="*" component={Home}/>
+          <Route name="home" path="/" component={App}/>
         </Route>
       </Router>
 );
